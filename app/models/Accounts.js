@@ -12,7 +12,8 @@ const accountSchema = new mongoose.Schema({
   },
   accountName: {
     type: String,
-    required: true
+    required: true,
+    maxlength: 50
   },
   lastUpdate: {
     type: Date,
