@@ -1,6 +1,6 @@
 const Account = require('../models/Account');
 
-// Créer un compte
+// Créer
 exports.createAccount = async (req, res) => {
   try {
     const { userId, bankName, accountName, lastUpdate } = req.body;
@@ -13,7 +13,7 @@ exports.createAccount = async (req, res) => {
   }
 };
 
-// Mettre à jour un compte
+// Mettre à jour
 exports.updateAccount = async (req, res) => {
   try {
     const accountId = req.params.id;
@@ -31,7 +31,7 @@ exports.updateAccount = async (req, res) => {
   }
 };
 
-// Supprimer un compte
+// Supprimer
 exports.deleteAccount = async (req, res) => {
   try {
     const accountId = req.params.id;
