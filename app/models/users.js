@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: function (value) {
-        // Expression régulière format de l'email
+        // format de l'email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(value);
       },
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (value) {
-        // Expression régulière 8 caractères et un caractère spécial
+        // 8 caractères et un caractère spécial
         const passwordRegex = /^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*])[\S]{8,}$/;
         return passwordRegex.test(value);
       },
@@ -27,11 +27,16 @@ const userSchema = new mongoose.Schema({
         'Le mot de passe doit contenir au moins 8 caractères et un caractère spécial.',
     },
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
 });
+
+userSchema.path('email').validate(function (value) {
+  return mongoose.models.User.findOne({ email: value }).then((user) => {
+    if (user) {
+      return false; // False si user existe
+    }
+    return true;
+  });
+}, 'Cet email est déjà utilisé.');
 
 const User = mongoose.model('User', userSchema);
 
