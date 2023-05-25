@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -29,14 +30,27 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.path('email').validate(function (value) {
-  return mongoose.models.User.findOne({ email: value }).then((user) => {
-    if (user) {
-      return false; // False si user existe
+// Middleware pre pour le hashage du mot de passe avant la sauvegarde
+userSchema.pre('save', async function (next) {
+  try {
+    if (this.isModified('password')) {
+      const hashedPassword = await bcrypt.hash(this.password, 10);
+      this.password = hashedPassword;
     }
-    return true;
-  });
-}, 'Cet email est déjà utilisé.');
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+userSchema.path('email').validate(function (value) {
+    return mongoose.models.User.findOne({ email: value }).then((user) => {
+      if (user) {
+        return false; // False si user existe
+      }
+      return true;
+    });
+  }, 'Cet email est déjà utilisé.');
 
 const User = mongoose.model('User', userSchema);
 

@@ -7,17 +7,8 @@ exports.signup = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // utilisateur existe déjà
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
-    }
-
-    // hashage
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // nouvel utilisateur
-    const newUser = await User.create({ email, password: hashedPassword });
+    // Création du nouvel utilisateur
+    const newUser = await User.create({ email, password });
 
     res.status(201).json(newUser);
   } catch (error) {
@@ -25,25 +16,26 @@ exports.signup = async (req, res) => {
   }
 };
 
-// connexion
+// Connexion
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // si l'utilisateur existe
+    // Recherche de l'utilisateur dans la base de données
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'Identifiants invalides.' });
     }
 
-    // mot de passe
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    // Vérification du mot de passe
+    const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Identifiants invalides.' });
     }
 
-    // token d'authentification
-    const token = jwt.sign({ userId: user._id }, 'clesecret');
+    // Génération du token d'authentification
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+
 
     res.status(200).json({ token });
   } catch (error) {
