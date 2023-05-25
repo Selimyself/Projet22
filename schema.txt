@@ -1,0 +1,26 @@
+Collection "Users":
+
+_id: ObjectId
+email: String
+password: String
+createdAt: Date
+
+Collection "Accounts":
+
+_id: ObjectId
+userId: ObjectId
+bankName: String
+accountName: String
+lastUpdate: Date
+
+Collection "Transactions":
+
+_id: ObjectId
+accountId: ObjectId
+label: String
+type: String
+amount: Number
+paymentDate: Date
+paymentMethod: String
+status: String
+category: String
