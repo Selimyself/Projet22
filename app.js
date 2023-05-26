@@ -16,6 +16,7 @@ mongoose.connect(config.MONGODB_URI, {
   });
 
 // Configurer les routes
-
+const routes = require('./routes');
+app.use(routes);
 
 module.exports = app;
