@@ -1,5 +1,6 @@
-const Transaction = require('../models/Transaction');
-const Account = require('../models/Account');
+const Transaction = require('../models/transaction');
+const Account = require('../models/account');
+const User = require('../models/user');
 
 // nouvelle ligne de compte
 exports.createTransaction = async (req, res) => {

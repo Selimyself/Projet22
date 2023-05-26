@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const transactionSchema = new mongoose.Schema({
   accountId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Account',
+    ref: 'account',
     required: true,
   },
   label: {
@@ -46,11 +46,11 @@ const transactionSchema = new mongoose.Schema({
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
+    ref: 'category',
     required: [true, 'La catégorie est requise.'],
   },
 });
 
-const Transaction = mongoose.model('Transaction', transactionSchema);
+const Transaction = mongoose.model('transaction', transactionSchema);
 
 module.exports = Transaction;

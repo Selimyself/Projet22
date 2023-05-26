@@ -1,24 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const UserController = require('./controllers/userController');
-const AccountController = require('./controllers/accountController');
-const TransactionController = require('./controllers/transactionController');
+const UserController = require('../controllers/userController');
+const AccountController = require('../controllers/accountController');
+const TransactionController = require('../controllers/transactionController');
 
 // Routes pour l'authentification
-router.post('/register', UserController.register);
+router.post('/signup', UserController.signup);
 router.post('/login', UserController.login);
 
-
 // Routes pour les comptes
-router.get('/accounts', AccountController.getAllAccounts);
-router.get('/accounts/:id', AccountController.getAccountById);
 router.post('/accounts', AccountController.createAccount);
 router.put('/accounts/:id', AccountController.updateAccount);
 router.delete('/accounts/:id', AccountController.deleteAccount);
 
 // Routes pour les opérations
-router.get('/transactions', TransactionController.getAllTransactions);
-router.get('/transactions/:id', TransactionController.getTransactionById);
 router.post('/transactions', TransactionController.createTransaction);
 router.put('/transactions/:id', TransactionController.updateTransaction);
 router.delete('/transactions/:id', TransactionController.deleteTransaction);

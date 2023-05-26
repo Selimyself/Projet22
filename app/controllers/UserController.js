@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/user.js');
 
 // Inscription
 exports.signup = async (req, res) => {
@@ -35,7 +35,6 @@ exports.login = async (req, res) => {
 
     // Génération du token d'authentification
     const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
-
 
     res.status(200).json({ token });
   } catch (error) {
