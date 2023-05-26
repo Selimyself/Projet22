@@ -12,11 +12,13 @@ router.post('/login', UserController.login);
 router.post('/accounts', AccountController.createAccount);
 router.put('/accounts/:id', AccountController.updateAccount);
 router.delete('/accounts/:id', AccountController.deleteAccount);
+router.get('/accounts/balance', AccountController.getTotalBalance);
 
 // Routes pour les opérations
 router.post('/transactions', TransactionController.createTransaction);
 router.put('/transactions/:id', TransactionController.updateTransaction);
 router.delete('/transactions/:id', TransactionController.deleteTransaction);
+router.get('/accounts/:accountId/transactions', TransactionController.getTransactionsAndBalance);
 
 // Route pour obtenir les opérations non pointées
 router.get('/transactions/unpointed', TransactionController.getUnpointedTransactions);
