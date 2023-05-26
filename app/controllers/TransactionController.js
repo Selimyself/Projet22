@@ -126,3 +126,36 @@ async function calculateAccountBalance(accountId) {
     throw new Error('Une erreur s\'est produite lors du calcul du solde du compte.');
 }
 }
+
+// Méthode pour obtenir les opérations non pointées
+exports.getUnpointedTransactions = async (req, res) => {
+    try {
+      const transactions = await Transaction.find({ status: 'A venir' });
+      res.json(transactions);
+    } catch (error) {
+      res.status(500).json({ error: 'Erreur lors de la récupération des opérations non pointées' });
+    }
+  };
+
+// dépenses du mois par catégorie
+exports.getMonthlyExpensesByCategory = async (req, res) => {
+    try {
+      const { category, month, year } = req.params;
+      const userId = req.user._id; // récupère l'id de l'utilisateur connecté
+  
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 0);
+  
+      const transactions = await Transaction.find({
+        category,
+        paymentDate: { $gte: startDate, $lte: endDate },
+        type: 'Débit',
+      });
+  
+      res.json(transactions);
+    } catch (error) {
+      res.status(500).json({ error: 'Erreur lors de la récupération des dépenses mensuelles par catégorie' });
+    }
+  };
+  
+  

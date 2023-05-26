@@ -47,3 +47,21 @@ exports.deleteAccount = async (req, res) => {
     res.status(500).json({ message: 'Une erreur s\'est produite lors de la suppression du compte.' });
   }
 };
+
+// solde total des comptes de l'utilisateur
+exports.getTotalBalance = async (req, res) => {
+    try {
+      const userId = req.user._id; // récupérer l'id de l'utilisateur connecté
+      const accounts = await Account.find({ userId });
+      let totalBalance = 0;
+  
+      accounts.forEach((account) => {
+        totalBalance += account.balance;
+      });
+  
+      res.json({ balance: totalBalance });
+    } catch (error) {
+      res.status(500).json({ error: 'Erreur lors de la récupération du solde total des comptes' });
+    }
+  };
+  
